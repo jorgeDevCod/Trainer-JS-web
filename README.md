@@ -34,4 +34,4 @@ El proyecto busca facilitar el aprendizaje mediante ejercicios progresivos, prom
 ## 🚀 Instalación y uso
 1. Clona este repositorio:
    ```bash
-   git clone https://github.com/tu-usuario/tu-repositorio.git
+git clone https://github.com/tu-usuario/tu-repositorio.git](https://github.com/jorgeDevCod/Trainer-JS-web.git
