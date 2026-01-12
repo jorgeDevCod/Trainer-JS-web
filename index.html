@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeWars JS - Academia de JavaScript</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const exercises = [
+            // DÍA 1 - Fundamentos y Strings
+            {
+                id: 1,
+                day: 1,
+                title: "Invertir una Cadena",
+                difficulty: "facil",
+                description: "Escribe una función que reciba una cadena de texto y la devuelva invertida. Este es uno de los ejercicios más clásicos en entrevistas.",
+                examples: [
+                    'reverseString("hola") → "aloh"',
+                    'reverseString("JavaScript") → "tpircSavaJ"',
+                    'reverseString("a") → "a"'
+                ],
+                solution: `function reverseString(str) {
+    // Método 1: Usando métodos de array
+    // split('') convierte el string en array de caracteres
+    // reverse() invierte el array
+    // join('') une los caracteres en un string
+    return str.split('').reverse().join('');
+    
+    // Método 2: Usando un bucle (más eficiente en memoria)
+    // let reversed = '';
+    // for (let i = str.length - 1; i >= 0; i--) {
+    //     reversed += str[i];
+    // }
+    // return reversed;
+    
+    // Método 3: Usando reduce
+    // return str.split('').reduce((acc, char) => char + acc, '');
+}`,
+                tips: "Piensa en diferentes formas de recorrer un string. La solución con split-reverse-join es la más legible, pero el bucle es más eficiente."
+            },
+            {
+                id: 2,
+                day: 1,
+                title: "Palíndromo",
+                difficulty: "facil",
+                description: "Determina si una palabra o frase es un palíndromo (se lee igual de adelante hacia atrás). Ignora espacios y mayúsculas.",
+                examples: [
+                    'isPalindrome("anilina") → true',
+                    'isPalindrome("Hola") → false',
+                    'isPalindrome("A man a plan a canal Panama") → true'
+                ],
+                solution: `function isPalindrome(str) {
+    // Primero limpiamos el string:
+    // toLowerCase() convierte todo a minúsculas
+    // replace(/[^a-z0-9]/g, '') elimina todo excepto letras y números
+    const cleaned = str.toLowerCase().replace(/[^a-z0-9]/g, '');
+    
+    // Comparamos el string limpio con su reverso
+    const reversed = cleaned.split('').reverse().join('');
+    
+    return cleaned === reversed;
+    
+    // Método alternativo: comparar desde ambos extremos
+    // let left = 0;
+    // let right = cleaned.length - 1;
+    // while (left < right) {
+    //     if (cleaned[left] !== cleaned[right]) return false;
+    //     left++;
+    //     right--;
+    // }
+    // return true;
+}`,
+                tips: "Recuerda limpiar el string antes de comparar. Los palíndromos ignoran espacios, puntuación y mayúsculas."
+            },
+            {
+                id: 3,
+                day: 1,
+                title: "FizzBuzz",
+                difficulty: "facil",
+                description: "El clásico FizzBuzz. Imprime números del 1 al n, pero para múltiplos de 3 imprime 'Fizz', para múltiplos de 5 imprime 'Buzz', y para múltiplos de ambos imprime 'FizzBuzz'.",
+                examples: [
+                    'fizzBuzz(15) → [1, 2, "Fizz", 4, "Buzz", "Fizz", 7, 8, "Fizz", "Buzz", 11, "Fizz", 13, 14, "FizzBuzz"]'
+                ],
+                solution: `function fizzBuzz(n) {
+    const result = [];
+    
+    // Iteramos desde 1 hasta n
+    for (let i = 1; i <= n; i++) {
+        // IMPORTANTE: Verificar múltiplos de 15 primero
+        // Si ponemos esta condición al final, nunca se ejecutará
+        if (i % 15 === 0) {
+            result.push('FizzBuzz');
+        }
+        // Múltiplo de 3
+        else if (i % 3 === 0) {
+            result.push('Fizz');
+        }
+        // Múltiplo de 5
+        else if (i % 5 === 0) {
+            result.push('Buzz');
+        }
+        // No es múltiplo de 3 ni de 5
+        else {
+            result.push(i);
+        }
+    }
+    
+    return result;
+}`,
+                tips: "El orden de las condiciones es crucial. Siempre verifica el caso más específico (múltiplo de ambos) primero."
+            },
+            {
+                id: 4,
+                day: 1,
+                title: "Encontrar el Máximo",
+                difficulty: "facil",
+                description: "Encuentra el número más grande en un array sin usar Math.max().",
+                examples: [
+                    'findMax([1, 5, 3, 9, 2]) → 9',
+                    'findMax([-1, -5, -3]) → -1',
+                    'findMax([42]) → 42'
+                ],
+                solution: `function findMax(arr) {
+    // Verificamos que el array no esté vacío
+    if (arr.length === 0) return null;
+    
+    // Inicializamos el máximo con el primer elemento
+    let max = arr[0];
+    
+    // Recorremos el array desde el segundo elemento
+    for (let i = 1; i < arr.length; i++) {
+        // Si encontramos un número mayor, actualizamos max
+        if (arr[i] > max) {
+            max = arr[i];
+        }
+    }
+    
+    return max;
+    
+    // Método alternativo usando reduce:
+    // return arr.reduce((max, current) => current > max ? current : max, arr[0]);
+}`,
+                tips: "Inicializa siempre tu variable con el primer elemento del array, no con 0, ya que todos los números podrían ser negativos."
+            },
+
+            // DÍA 2 - Arrays y Manipulación
+            {
+                id: 5,
+                day: 2,
+                title: "Eliminar Duplicados",
+                difficulty: "facil",
+                description: "Elimina los elementos duplicados de un array y devuelve un array con valores únicos.",
+                examples: [
+                    'removeDuplicates([1, 2, 2, 3, 4, 4, 5]) → [1, 2, 3, 4, 5]',
+                    'removeDuplicates(["a", "b", "a", "c"]) → ["a", "b", "c"]'
+                ],
+                solution: `function removeDuplicates(arr) {
+    // Método 1: Usando Set (más moderno y limpio)
+    // Set es una estructura que solo permite valores únicos
+    // El operador spread [...] convierte el Set de nuevo a array
+    return [...new Set(arr)];
+    
+    // Método 2: Usando filter
+    // return arr.filter((item, index) => arr.indexOf(item) === index);
+    
+    // Método 3: Usando reduce (más control)
+    // return arr.reduce((unique, item) => {
+    //     return unique.includes(item) ? unique : [...unique, item];
+    // }, []);
+}`,
+                tips: "Set es la forma más eficiente y elegante. Conocer esta estructura de datos es importante para entrevistas."
+            },
+            {
+                id: 6,
+                day: 2,
+                title: "Aplanar Array",
+                difficulty: "medio",
+                description: "Aplana un array anidado de cualquier profundidad. Convierte [[1, 2], [3, [4, 5]]] en [1, 2, 3, 4, 5].",
+                examples: [
+                    'flattenArray([1, [2, 3], [4, [5, 6]]]) → [1, 2, 3, 4, 5, 6]',
+                    'flattenArray([1, 2, 3]) → [1, 2, 3]'
+                ],
+                solution: `function flattenArray(arr) {
+    // Método 1: Usando flat() con Infinity
+    // flat(Infinity) aplana todos los niveles de anidación
+    return arr.flat(Infinity);
+    
+    // Método 2: Recursivo (para entender la lógica)
+    // const result = [];
+    // arr.forEach(item => {
+    //     if (Array.isArray(item)) {
+    //         // Si es un array, llamamos recursivamente
+    //         result.push(...flattenArray(item));
+    //     } else {
+    //         // Si no es array, lo agregamos directamente
+    //         result.push(item);
+    //     }
+    // });
+    // return result;
+    
+    // Método 3: Usando reduce (elegante y funcional)
+    // return arr.reduce((flat, item) => {
+    //     return flat.concat(Array.isArray(item) ? flattenArray(item) : item);
+    // }, []);
+}`,
+                tips: "La recursión es clave aquí. Entiende cómo una función puede llamarse a sí misma para resolver problemas complejos."
+            },
+            {
+                id: 7,
+                day: 2,
+                title: "Rotar Array",
+                difficulty: "medio",
+                description: "Rota los elementos de un array k posiciones hacia la derecha.",
+                examples: [
+                    'rotateArray([1, 2, 3, 4, 5], 2) → [4, 5, 1, 2, 3]',
+                    'rotateArray([1, 2, 3], 4) → [3, 1, 2]'
+                ],
+                solution: `function rotateArray(arr, k) {
+    // Si el array está vacío, retornamos array vacío
+    if (arr.length === 0) return arr;
+    
+    // Optimización: k podría ser mayor que la longitud del array
+    // Usar módulo para obtener rotaciones efectivas
+    k = k % arr.length;
+    
+    // Método 1: Usando slice
+    // slice(-k) toma los últimos k elementos
+    // slice(0, -k) toma desde el inicio hasta k elementos antes del final
+    return [...arr.slice(-k), ...arr.slice(0, -k)];
+    
+    // Método 2: Usando splice (modifica el array original)
+    // const rotated = arr.splice(-k);
+    // return [...rotated, ...arr];
+    
+    // Método 3: Algoritmo de reversión (in-place, O(1) espacio)
+    // function reverse(arr, start, end) {
+    //     while (start < end) {
+    //         [arr[start], arr[end]] = [arr[end], arr[start]];
+    //         start++;
+    //         end--;
+    //     }
+    // }
+    // const copy = [...arr];
+    // reverse(copy, 0, copy.length - 1);
+    // reverse(copy, 0, k - 1);
+    // reverse(copy, k, copy.length - 1);
+    // return copy;
+}`,
+                tips: "Recuerda usar el módulo cuando k sea mayor que la longitud del array. Esto evita rotaciones innecesarias."
+            },
+            {
+                id: 8,
+                day: 2,
+                title: "Intersección de Arrays",
+                difficulty: "medio",
+                description: "Encuentra los elementos que están presentes en ambos arrays.",
+                examples: [
+                    'intersection([1, 2, 3, 4], [2, 3, 5]) → [2, 3]',
+                    'intersection(["a", "b"], ["b", "c"]) → ["b"]'
+                ],
+                solution: `function intersection(arr1, arr2) {
+    // Convertimos el segundo array a Set para búsquedas O(1)
+    const set2 = new Set(arr2);
+    
+    // Filtramos arr1 para mantener solo elementos que estén en set2
+    // Usamos Set al final para eliminar duplicados del resultado
+    return [...new Set(arr1.filter(item => set2.has(item)))];
+    
+    // Método alternativo sin Set (menos eficiente):
+    // return arr1.filter(item => arr2.includes(item))
+    //           .filter((item, index, self) => self.indexOf(item) === index);
+}`,
+                tips: "Usar Set mejora la complejidad de O(n²) a O(n). Esta optimización es importante en entrevistas técnicas."
+            },
+
+            // DÍA 3 - Objetos y Estructuras de Datos
+            {
+                id: 9,
+                day: 3,
+                title: "Contar Ocurrencias",
+                difficulty: "facil",
+                description: "Cuenta cuántas veces aparece cada elemento en un array y devuelve un objeto con los resultados.",
+                examples: [
+                    'countOccurrences([1, 2, 2, 3, 3, 3]) → {1: 1, 2: 2, 3: 3}',
+                    'countOccurrences(["a", "b", "a"]) → {a: 2, b: 1}'
+                ],
+                solution: `function countOccurrences(arr) {
+    // Método 1: Usando reduce (más funcional)
+    return arr.reduce((count, item) => {
+        // Si el item ya existe en el objeto, incrementamos
+        // Si no existe, lo inicializamos en 1
+        count[item] = (count[item] || 0) + 1;
+        return count;
+    }, {});
+    
+    // Método 2: Usando forEach (más legible)
+    // const count = {};
+    // arr.forEach(item => {
+    //     if (count[item]) {
+    //         count[item]++;
+    //     } else {
+    //         count[item] = 1;
+    //     }
+    // });
+    // return count;
+    
+    // Método 3: Usando Map (mantiene orden de inserción)
+    // const map = new Map();
+    // arr.forEach(item => {
+    //     map.set(item, (map.get(item) || 0) + 1);
+    // });
+    // return Object.fromEntries(map);
+}`,
+                tips: "El patrón (count[item] || 0) + 1 es muy común. Asegúrate de entenderlo bien."
+            },
+            {
+                id: 10,
+                day: 3,
+                title: "Agrupar por Propiedad",
+                difficulty: "medio",
+                description: "Agrupa un array de objetos por el valor de una propiedad específica.",
+                examples: [
+                    'groupBy([{type: "fruit", name: "apple"}, {type: "fruit", name: "banana"}, {type: "veggie", name: "carrot"}], "type") → {fruit: [{...}, {...}], veggie: [{...}]}'
+                ],
+                solution: `function groupBy(arr, property) {
+    // Usamos reduce para construir el objeto agrupado
+    return arr.reduce((grouped, item) => {
+        // Obtenemos el valor de la propiedad por la que agrupamos
+        const key = item[property];
+        
+        // Si la key no existe en grouped, la inicializamos como array vacío
+        if (!grouped[key]) {
+            grouped[key] = [];
+        }
+        
+        // Agregamos el item al grupo correspondiente
+        grouped[key].push(item);
+        
+        return grouped;
+    }, {});
+    
+    // Versión más concisa usando el operador nullish coalescing:
+    // return arr.reduce((grouped, item) => {
+    //     const key = item[property];
+    //     grouped[key] = grouped[key] ?? [];
+    //     grouped[key].push(item);
+    //     return grouped;
+    // }, {});
+}`,
+                tips: "Este patrón es muy útil para organizar datos. Lo verás frecuentemente en aplicaciones reales."
+            },
+            {
+                id: 11,
+                day: 3,
+                title: "Deep Clone",
+                difficulty: "medio",
+                description: "Crea una copia profunda de un objeto, incluyendo objetos y arrays anidados.",
+                examples: [
+                    'deepClone({a: 1, b: {c: 2}}) → {a: 1, b: {c: 2}} (copia independiente)'
+                ],
+                solution: `function deepClone(obj) {
+    // Caso base: si no es objeto o es null, retornamos el valor
+    if (obj === null || typeof obj !== 'object') {
+        return obj;
+    }
+    
+    // Manejo especial para Date
+    if (obj instanceof Date) {
+        return new Date(obj.getTime());
+    }
+    
+    // Manejo especial para Array
+    if (Array.isArray(obj)) {
+        // Creamos nuevo array y clonamos cada elemento recursivamente
+        return obj.map(item => deepClone(item));
+    }
+    
+    // Manejo de objetos
+    const clonedObj = {};
+    
+    // Iteramos sobre todas las propiedades del objeto
+    for (let key in obj) {
+        // Verificamos que sea propiedad propia (no heredada)
+        if (obj.hasOwnProperty(key)) {
+            // Clonamos recursivamente cada propiedad
+            clonedObj[key] = deepClone(obj[key]);
+        }
+    }
+    
+    return clonedObj;
+    
+    // Método moderno simple (no funciona con funciones, Date, etc.):
+    // return JSON.parse(JSON.stringify(obj));
+}`,
+                tips: "JSON.parse(JSON.stringify()) funciona en muchos casos pero tiene limitaciones. La recursión te da control total."
+            },
+            {
+                id: 12,
+                day: 3,
+                title: "Merge Objects",
+                difficulty: "medio",
+                description: "Combina dos objetos profundamente. Si hay conflictos, el segundo objeto tiene prioridad.",
+                examples: [
+                    'mergeDeep({a: 1, b: {c: 2}}, {b: {d: 3}, e: 4}) → {a: 1, b: {c: 2, d: 3}, e: 4}'
+                ],
+                solution: `function mergeDeep(obj1, obj2) {
+    // Creamos un nuevo objeto para no mutar los originales
+    const result = {...obj1};
+    
+    // Iteramos sobre las propiedades del segundo objeto
+    for (let key in obj2) {
+        if (obj2.hasOwnProperty(key)) {
+            // Si ambos valores son objetos (no arrays ni null), hacemos merge recursivo
+            if (
+                typeof obj2[key] === 'object' && 
+                obj2[key] !== null && 
+                !Array.isArray(obj2[key]) &&
+                typeof result[key] === 'object' &&
+                result[key] !== null &&
+                !Array.isArray(result[key])
+            ) {
+                // Merge recursivo
+                result[key] = mergeDeep(result[key], obj2[key]);
+            } else {
+                // Caso simple: sobrescribimos con el valor de obj2
+                result[key] = obj2[key];
+            }
+        }
+    }
+    
+    return result;
+}`,
+                tips: "El merge profundo es común en configuraciones y state management. Entiende la diferencia entre merge superficial y profundo."
+            },
+
+            // DÍA 4 - Algoritmos de Búsqueda
+            {
+                id: 13,
+                day: 4,
+                title: "Búsqueda Binaria",
+                difficulty: "medio",
+                description: "Implementa búsqueda binaria en un array ordenado. Debe retornar el índice del elemento o -1 si no existe.",
+                examples: [
+                    'binarySearch([1, 3, 5, 7, 9], 5) → 2',
+                    'binarySearch([1, 3, 5, 7, 9], 6) → -1'
+                ],
+                solution: `function binarySearch(arr, target) {
+    // Definimos los punteros de inicio y fin
+    let left = 0;
+    let right = arr.length - 1;
+    
+    // Mientras el rango sea válido
+    while (left <= right) {
+        // Calculamos el índice medio
+        // Usamos Math.floor para evitar decimales
+        const mid = Math.floor((left + right) / 2);
+        
+        // Si encontramos el target, retornamos el índice
+        if (arr[mid] === target) {
+            return mid;
+        }
+        
+        // Si el target es mayor, buscamos en la mitad derecha
+        if (arr[mid] < target) {
+            left = mid + 1;
+        } 
+        // Si el target es menor, buscamos en la mitad izquierda
+        else {
+            right = mid - 1;
+        }
+    }
+    
+    // Si no encontramos el target
+    return -1;
+    
+    // Versión recursiva:
+    // function binarySearchRecursive(arr, target, left = 0, right = arr.length - 1) {
+    //     if (left > right) return -1;
+    //     
+    //     const mid = Math.floor((left + right) / 2);
+    //
+    //     
+    //     const mid = Math.floor((left + right) / 2);
+    //     
+    //     if (arr[mid] === target) return mid;
+    //     if (arr[mid] < target) {
+    //         return binarySearchRecursive(arr, target, mid + 1, right);
+    //     } else {
+    //         return binarySearchRecursive(arr, target, left, mid - 1);
+    //     }
+    // }
+}`,
+                tips: "La búsqueda binaria reduce la complejidad de O(n) a O(log n). Es fundamental para entrevistas técnicas."
+            },
+            {
+                id: 14,
+                day: 4,
+                title: "Dos Sumas (Two Sum)",
+                difficulty: "medio",
+                description: "Encuentra dos números en un array que sumen un valor objetivo. Retorna los índices de esos números.",
+                examples: [
+                    'twoSum([2, 7, 11, 15], 9) → [0, 1]',
+                    'twoSum([3, 2, 4], 6) → [1, 2]'
+                ],
+                solution: `function twoSum(nums, target) {
+    // Usamos un Map para almacenar números ya vistos y sus índices
+    // Esto nos permite buscar en O(1) en lugar de O(n)
+    const seen = new Map();
+    
+    // Recorremos el array una sola vez
+    for (let i = 0; i < nums.length; i++) {
+        // Calculamos qué número necesitamos para llegar al target
+        const complement = target - nums[i];
+        
+        // Si ya vimos ese complemento, encontramos la pareja
+        if (seen.has(complement)) {
+            // Retornamos los índices [índice del complemento, índice actual]
+            return [seen.get(complement), i];
+        }
+        
+        // Si no, guardamos el número actual y su índice
+        seen.set(nums[i], i);
+    }
+    
+    // Si no encontramos pareja, retornamos null o array vacío
+    return null;
+}`,
+                tips: "Este es uno de los problemas más comunes en entrevistas. La clave es usar un HashMap para optimizar."
+            },
+            {
+                id: 15,
+                day: 4,
+                title: "Encontrar el Elemento Faltante",
+                difficulty: "facil",
+                description: "Dado un array que contiene n números del rango [0, n], encuentra el número que falta.",
+                examples: [
+                    'findMissing([3, 0, 1]) → 2',
+                    'findMissing([0, 1]) → 2',
+                    'findMissing([9,6,4,2,3,5,7,0,1]) → 8'
+                ],
+                solution: `function findMissing(nums) {
+    // Método 1: Usando suma matemática (más eficiente)
+    const n = nums.length;
+    
+    // La suma de números de 0 a n es: n * (n + 1) / 2
+    const expectedSum = (n * (n + 1)) / 2;
+    
+    // Calculamos la suma actual del array
+    const actualSum = nums.reduce((sum, num) => sum + num, 0);
+    
+    // La diferencia es el número faltante
+    return expectedSum - actualSum;
+}`,
+                tips: "La fórmula matemática es la solución más elegante. También aprende el truco XOR, es muy útil."
+            },
+            {
+                id: 16,
+                day: 4,
+                title: "Primer Carácter Único",
+                difficulty: "facil",
+                description: "Encuentra el primer carácter que no se repite en un string y retorna su índice.",
+                examples: [
+                    'firstUnique("leetcode") → 0',
+                    'firstUnique("loveleetcode") → 2',
+                    'firstUnique("aabb") → -1'
+                ],
+                solution: `function firstUnique(s) {
+    // Paso 1: Contar frecuencia de cada carácter
+    const charCount = {};
+    
+    // Recorremos el string para contar
+    for (let char of s) {
+        charCount[char] = (charCount[char] || 0) + 1;
+    }
+    
+    // Paso 2: Encontrar el primer carácter con frecuencia 1
+    for (let i = 0; i < s.length; i++) {
+        if (charCount[s[i]] === 1) {
+            return i;
+        }
+    }
+    
+    // Si no hay caracteres únicos
+    return -1;
+}`,
+                tips: "El patrón de dos pasadas es común: primero contar, luego buscar. Es O(n) en tiempo."
+            },
+
+            // DÍA 5 - Recursión y Backtracking
+            {
+                id: 17,
+                day: 5,
+                title: "Factorial",
+                difficulty: "facil",
+                description: "Calcula el factorial de un número de forma recursiva. El factorial de n es n! = n × (n-1) × ... × 1.",
+                examples: [
+                    'factorial(5) → 120',
+                    'factorial(0) → 1',
+                    'factorial(3) → 6'
+                ],
+                solution: `function factorial(n) {
+    // Caso base: el factorial de 0 y 1 es 1
+    if (n === 0 || n === 1) {
+        return 1;
+    }
+    
+    // Caso recursivo: n! = n × (n-1)!
+    return n * factorial(n - 1);
+}`,
+                tips: "La recursión necesita siempre un caso base para no entrar en bucle infinito."
+            },
+            {
+                id: 18,
+                day: 5,
+                title: "Fibonacci",
+                difficulty: "medio",
+                description: "Calcula el n-ésimo número de Fibonacci. La secuencia es: 0, 1, 1, 2, 3, 5, 8, 13...",
+                examples: [
+                    'fibonacci(6) → 8',
+                    'fibonacci(0) → 0',
+                    'fibonacci(1) → 1'
+                ],
+                solution: `function fibonacci(n) {
+    // Casos base
+    if (n === 0) return 0;
+    if (n === 1) return 1;
+    
+    // Con memoización (mucho más rápido, O(n))
+    const memo = {};
+    function fib(n) {
+        if (n === 0) return 0;
+        if (n === 1) return 1;
+        
+        // Si ya calculamos este valor, lo retornamos
+        if (memo[n]) return memo[n];
+        
+        // Calculamos y guardamos en memo
+        memo[n] = fib(n - 1) + fib(n - 2);
+        return memo[n];
+    }
+    return fib(n);
+}`,
+                tips: "Fibonacci muestra la importancia de la memoización. Sin ella, el algoritmo recursivo es extremadamente lento."
+            },
+            {
+                id: 19,
+                day: 5,
+                title: "Generar Permutaciones",
+                difficulty: "dificil",
+                description: "Genera todas las permutaciones posibles de un array.",
+                examples: [
+                    'permutations([1, 2, 3]) → [[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1]]'
+                ],
+                solution: `function permutations(arr) {
+    const result = [];
+    
+    // Si el array está vacío, retornamos array con array vacío
+    if (arr.length === 0) return [[]];
+    
+    // Si tiene un solo elemento, ese es la única permutación
+    if (arr.length === 1) return [arr];
+    
+    // Función auxiliar recursiva
+    function backtrack(current, remaining) {
+        // Caso base: si no quedan elementos, agregamos la permutación
+        if (remaining.length === 0) {
+            result.push([...current]);
+            return;
+        }
+        
+        // Probamos cada elemento restante en la posición actual
+        for (let i = 0; i < remaining.length; i++) {
+            // Tomamos el elemento en posición i
+            const element = remaining[i];
+            
+            // Creamos nuevo array sin ese elemento
+            const newRemaining = [...remaining.slice(0, i), ...remaining.slice(i + 1)];
+            
+            // Recursión: agregamos element a current y continuamos
+            backtrack([...current, element], newRemaining);
+        }
+    }
+    
+    // Iniciamos el backtracking
+    backtrack([], arr);
+    return result;
+}`,
+                tips: "El backtracking es fundamental para problemas combinatorios. Visualiza el árbol de decisiones."
+            },
+            {
+                id: 20,
+                day: 5,
+                title: "Subconjuntos (Power Set)",
+                difficulty: "medio",
+                description: "Genera todos los subconjuntos posibles de un array (conjunto potencia).",
+                examples: [
+                    'powerSet([1, 2]) → [[], [1], [2], [1,2]]',
+                    'powerSet([1, 2, 3]) → [[], [1], [2], [1,2], [3], [1,3], [2,3], [1,2,3]]'
+                ],
+                solution: `function powerSet(arr) {
+    const result = [[]]; // Empezamos con el conjunto vacío
+    
+    // Por cada elemento del array
+    for (let element of arr) {
+        // Tomamos todos los subconjuntos actuales
+        const currentLength = result.length;
+        
+        // Y creamos nuevos subconjuntos agregando el elemento actual
+        for (let i = 0; i < currentLength; i++) {
+            // Creamos una copia del subconjunto y agregamos el elemento
+            result.push([...result[i], element]);
+        }
+    }
+    
+    return result;
+}`,
+                tips: "Para un array de n elementos, hay 2^n subconjuntos. Piensa en binario: cada bit representa incluir/excluir un elemento."
+            },
+
+            // DÍA 6 - Strings Avanzados
+            {
+                id: 21,
+                day: 6,
+                title: "Anagramas",
+                difficulty: "medio",
+                description: "Determina si dos strings son anagramas (contienen las mismas letras en diferente orden).",
+                examples: [
+                    'isAnagram("listen", "silent") → true',
+                    'isAnagram("hello", "world") → false',
+                    'isAnagram("Astronomer", "Moon starer") → true'
+                ],
+                solution: `function isAnagram(str1, str2) {
+    // Limpiamos y normalizamos los strings
+    const clean1 = str1.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const clean2 = str2.toLowerCase().replace(/[^a-z0-9]/g, '');
+    
+    // Si tienen diferente longitud, no pueden ser anagramas
+    if (clean1.length !== clean2.length) return false;
+    
+    // Ordenar y comparar
+    const sorted1 = clean1.split('').sort().join('');
+    const sorted2 = clean2.split('').sort().join('');
+    return sorted1 === sorted2;
+}`,
+                tips: "El método de contar caracteres es O(n), mientras que ordenar es O(n log n). Ambos son aceptables."
+            },
+            {
+                id: 22,
+                day: 6,
+                title: "Comprimir String",
+                difficulty: "medio",
+                description: "Comprime un string usando el conteo de caracteres consecutivos. 'aabbbcccc' → 'a2b3c4'.",
+                examples: [
+                    'compress("aabbbcccc") → "a2b3c4"',
+                    'compress("abc") → "abc" (no se comprime si no es más corto)',
+                    'compress("aaa") → "a3"'
+                ],
+                solution: `function compress(str) {
+    if (str.length === 0) return str;
+    
+    let compressed = '';
+    let count = 1;
+    
+    // Recorremos el string
+    for (let i = 0; i < str.length; i++) {
+        // Si el siguiente carácter es igual, incrementamos contador
+        if (str[i] === str[i + 1]) {
+            count++;
+        } else {
+            // Si es diferente, agregamos el carácter y su contador
+            compressed += str[i];
+            if (count > 1) {
+                compressed += count;
+            }
+            // Reseteamos el contador
+            count = 1;
+        }
+    }
+    
+    // Retornamos el string más corto
+    return compressed.length < str.length ? compressed : str;
+}`,
+                tips: "Compara siempre el carácter actual con el siguiente. Al final del string, str[i+1] será undefined."
+            },
+            {
+                id: 23,
+                day: 6,
+                title: "Substring Más Largo Sin Repetir",
+                difficulty: "medio",
+                description: "Encuentra la longitud del substring más largo sin caracteres repetidos.",
+                examples: [
+                    'longestSubstring("abcabcbb") → 3 (abc)',
+                    'longestSubstring("bbbbb") → 1 (b)',
+                    'longestSubstring("pwwkew") → 3 (wke)'
+                ],
+                solution: `function longestSubstring(s) {
+    // Usamos la técnica de "sliding window" (ventana deslizante)
+    let maxLength = 0;
+    let left = 0; // Inicio de la ventana
+    const charSet = new Set(); // Para rastrear caracteres en la ventana actual
+    
+    // Expandimos la ventana hacia la derecha
+    for (let right = 0; right < s.length; right++) {
+        // Si encontramos un duplicado, contraemos desde la izquierda
+        while (charSet.has(s[right])) {
+            charSet.delete(s[left]);
+            left++;
+        }
+        
+        // Agregamos el carácter actual
+        charSet.add(s[right]);
+        
+        // Actualizamos la longitud máxima
+        maxLength = Math.max(maxLength, right - left + 1);
+    }
+    
+    return maxLength;
+}`,
+                tips: "La técnica de sliding window es crucial. Es una ventana que se expande y contrae según las condiciones."
+            },
+            {
+                id: 24,
+                day: 6,
+                title: "Validar Paréntesis",
+                difficulty: "medio",
+                description: "Verifica si los paréntesis, corchetes y llaves están balanceados y en el orden correcto.",
+                examples: [
+                    'isValid("()[]{}") → true',
+                    'isValid("([)]") → false',
+                    'isValid("{[]}") → true'
+                ],
+                solution: `function isValid(s) {
+    // Usamos una pila (stack) para rastrear paréntesis de apertura
+    const stack = [];
+    
+    // Mapa de correspondencias
+    const pairs = {
+        ')': '(',
+        ']': '[',
+        '}': '{'
+    };
+    
+    // Recorremos cada carácter
+    for (let char of s) {
+        // Si es un paréntesis de cierre
+        if (char in pairs) {
+            // Verificamos que coincida con el último de apertura
+            if (stack.length === 0 || stack.pop() !== pairs[char]) {
+                return false;
+            }
+        } else {
+            // Si es de apertura, lo agregamos a la pila
+            stack.push(char);
+        }
+    }
+    
+    // Al final, la pila debe estar vacía
+    return stack.length === 0;
+}`,
+                tips: "Este problema introduce el concepto de Stack (pila). LIFO: Last In, First Out."
+            },
+
+            // DÍA 7 - Ordenamiento
+            {
+                id: 25,
+                day: 7,
+                title: "Bubble Sort",
+                difficulty: "facil",
+                description: "Implementa el algoritmo de ordenamiento Bubble Sort.",
+                examples: [
+                    'bubbleSort([64, 34, 25, 12, 22, 11, 90]) → [11, 12, 22, 25, 34, 64, 90]'
+                ],
+                solution: `function bubbleSort(arr) {
+    const sorted = [...arr];
+    const n = sorted.length;
+    
+    for (let i = 0; i < n - 1; i++) {
+        let swapped = false;
+        
+        for (let j = 0; j < n - i - 1; j++) {
+            if (sorted[j] > sorted[j + 1]) {
+                [sorted[j], sorted[j + 1]] = [sorted[j + 1], sorted[j]];
+                swapped = true;
+            }
+        }
+        
+        if (!swapped) break;
+    }
+    
+    return sorted;
+}`,
+                tips: "Bubble Sort es O(n²) pero es fácil de entender. El flag de optimización puede hacerlo O(n) en el mejor caso."
+            },
+            {
+                id: 26,
+                day: 7,
+                title: "Merge Sort",
+                difficulty: "medio",
+                description: "Implementa el algoritmo de ordenamiento Merge Sort (divide y conquista).",
+                examples: [
+                    'mergeSort([38, 27, 43, 3, 9, 82, 10]) → [3, 9, 10, 27, 38, 43, 82]'
+                ],
+                solution: `function mergeSort(arr) {
+    if (arr.length <= 1) return arr;
+    
+    const mid = Math.floor(arr.length / 2);
+    const left = arr.slice(0, mid);
+    const right = arr.slice(mid);
+    
+    return merge(mergeSort(left), mergeSort(right));
+}
+
+function merge(left, right) {
+    const result = [];
+    let i = 0, j = 0;
+    
+    while (i < left.length && j < right.length) {
+        if (left[i] < right[j]) {
+            result.push(left[i++]);
+        } else {
+            result.push(right[j++]);
+        }
+    }
+    
+    return [...result, ...left.slice(i), ...right.slice(j)];
+}`,
+                tips: "Merge Sort es O(n log n) en todos los casos. Es estable y predecible."
+            },
+            {
+                id: 27,
+                day: 7,
+                title: "Quick Sort",
+                difficulty: "medio",
+                description: "Implementa el algoritmo Quick Sort usando partición.",
+                examples: [
+                    'quickSort([10, 7, 8, 9, 1, 5]) → [1, 5, 7, 8, 9, 10]'
+                ],
+                solution: `function quickSort(arr) {
+    if (arr.length <= 1) return arr;
+    
+    const pivot = arr[Math.floor(arr.length / 2)];
+    const left = arr.filter(x => x < pivot);
+    const middle = arr.filter(x => x === pivot);
+    const right = arr.filter(x => x > pivot);
+    
+    return [...quickSort(left), ...middle, ...quickSort(right)];
+}`,
+                tips: "Quick Sort promedia O(n log n) pero puede ser O(n²) en el peor caso."
+            },
+            {
+                id: 28,
+                day: 7,
+                title: "Selection Sort",
+                difficulty: "facil",
+                description: "Implementa Selection Sort: encuentra el mínimo y lo coloca al principio.",
+                examples: [
+                    'selectionSort([64, 25, 12, 22, 11]) → [11, 12, 22, 25, 64]'
+                ],
+                solution: `function selectionSort(arr) {
+    const sorted = [...arr];
+    
+    for (let i = 0; i < sorted.length - 1; i++) {
+        let minIndex = i;
+        
+        for (let j = i + 1; j < sorted.length; j++) {
+            if (sorted[j] < sorted[minIndex]) {
+                minIndex = j;
+            }
+        }
+        
+        if (minIndex !== i) {
+            [sorted[i], sorted[minIndex]] = [sorted[minIndex], sorted[i]];
+        }
+    }
+    
+    return sorted;
+}`,
+                tips: "Selection Sort siempre es O(n²), pero hace el mínimo número de intercambios."
+            },
+
+            // DÍA 8 - Matrices
+            {
+                id: 29,
+                day: 8,
+                title: "Rotar Matriz 90°",
+                difficulty: "medio",
+                description: "Rota una matriz cuadrada 90 grados en sentido horario.",
+                examples: [
+                    'rotate([[1,2,3],[4,5,6],[7,8,9]]) → [[7,4,1],[8,5,2],[9,6,3]]'
+                ],
+                solution: `function rotateMatrix(matrix) {
+    const n = matrix.length;
+    
+    // Paso 1: Transponer
+    for (let i = 0; i < n; i++) {
+        for (let j = i + 1; j < n; j++) {
+            [matrix[i][j], matrix[j][i]] = [matrix[j][i], matrix[i][j]];
+        }
+    }
+    
+    // Paso 2: Invertir cada fila
+    for (let i = 0; i < n; i++) {
+        matrix[i].reverse();
+    }
+    
+    return matrix;
+}`,
+                tips: "Transponer + invertir filas = rotación 90°. Este patrón aparece en muchos problemas."
+            },
+            {
+                id: 30,
+                day: 8,
+                title: "Espiral de Matriz",
+                difficulty: "medio",
+                description: "Recorre una matriz en espiral y devuelve los elementos en ese orden.",
+                examples: [
+                    'spiralOrder([[1,2,3],[4,5,6],[7,8,9]]) → [1,2,3,6,9,8,7,4,5]'
+                ],
+                solution: `function spiralOrder(matrix) {
+    if (matrix.length === 0) return [];
+    
+    const result = [];
+    let top = 0, bottom = matrix.length - 1;
+    let left = 0, right = matrix[0].length - 1;
+    
+    while (top <= bottom && left <= right) {
+        for (let col = left; col <= right; col++) result.push(matrix[top][col]);
+        top++;
+        
+        for (let row = top; row <= bottom; row++) result.push(matrix[row][right]);
+        right--;
+        
+        if (top <= bottom) {
+            for (let col = right; col >= left; col--) result.push(matrix[bottom][col]);
+            bottom--;
+        }
+        
+        if (left <= right) {
+            for (let row = bottom; row >= top; row--) result.push(matrix[row][left]);
+            left++;
+        }
+    }
+    
+    return result;
+}`,
+                tips: "Mantén cuatro punteros y muévelos después de cada recorrido."
+            },
+            {
+                id: 31,
+                day: 8,
+                title: "Buscar en Matriz Ordenada",
+                difficulty: "medio",
+                description: "Busca un valor en una matriz donde cada fila y columna está ordenada.",
+                examples: [
+                    'searchMatrix([[1,4,7],[2,5,8],[3,6,9]], 5) → true'
+                ],
+                solution: `function searchMatrix(matrix, target) {
+    if (matrix.length === 0) return false;
+    
+    let row = 0;
+    let col = matrix[0].length - 1;
+    
+    while (row < matrix.length && col >= 0) {
+        if (matrix[row][col] === target) return true;
+        if (matrix[row][col] > target) col--;
+        else row++;
+    }
+    
+    return false;
+}`,
+                tips: "Empezar desde la esquina superior derecha permite eliminar filas/columnas en cada paso."
+            },
+
+            // DÍA 9 - Programación Dinámica
+            {
+                id: 32,
+                day: 9,
+                title: "Subir Escaleras",
+                difficulty: "medio",
+                description: "Puedes subir 1 o 2 escalones. ¿De cuántas formas puedes llegar al escalón n?",
+                examples: [
+                    'climbStairs(3) → 3',
+                    'climbStairs(5) → 8'
+                ],
+                solution: `function climbStairs(n) {
+    if (n <= 2) return n;
+    
+    let prev2 = 1, prev1 = 2, current = 0;
+    
+    for (let i = 3; i <= n; i++) {
+        current = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = current;
+    }
+    
+    return current;
+}`,
+                tips: "Es como Fibonacci. Reconocer patrones es muy útil."
+            },
+            {
+                id: 33,
+                day: 9,
+                title: "Máxima Suma de Subarray",
+                difficulty: "medio",
+                description: "Encuentra la suma máxima de un subarray contiguo (Algoritmo de Kadane).",
+                examples: [
+                    'maxSubArray([-2,1,-3,4,-1,2,1,-5,4]) → 6'
+                ],
+                solution: `function maxSubArray(nums) {
+    let maxSoFar = nums[0];
+    let maxEndingHere = nums[0];
+    
+    for (let i = 1; i < nums.length; i++) {
+        maxEndingHere = Math.max(nums[i], maxEndingHere + nums[i]);
+        maxSoFar = Math.max(maxSoFar, maxEndingHere);
+    }
+    
+    return maxSoFar;
+}`,
+                tips: "Kadane es O(n). Pregúntate: ¿continúo o empiezo de nuevo?"
+            },
+
+            // DÍA 10 - Problemas Avanzados
+            {
+                id: 34,
+                day: 10,
+                title: "LRU Cache",
+                difficulty: "dificil",
+                description: "Implementa una caché LRU con get y put en O(1).",
+                examples: [
+                    'cache.put(1,1); cache.get(1) → 1'
+                ],
+                solution: `class LRUCache {
+    constructor(capacity) {
+        this.capacity = capacity;
+        this.cache = new Map();
+    }
+    
+    get(key) {
+        if (!this.cache.has(key)) return -1;
+        const value = this.cache.get(key);
+        this.cache.delete(key);
+        this.cache.set(key, value);
+        return value;
+    }
+    
+    put(key, value) {
+        if (this.cache.has(key)) this.cache.delete(key);
+        this.cache.set(key, value);
+        if (this.cache.size > this.capacity) {
+            const firstKey = this.cache.keys().next().value;
+            this.cache.delete(firstKey);
+        }
+    }
+}`,
+                tips: "Map mantiene el orden de inserción. Úsalo para LRU elegante."
+            },
+            {
+                id: 35,
+                day: 10,
+                title: "Productos Excepto Sí Mismo",
+                difficulty: "medio",
+                description: "Devuelve un array donde cada posición es el producto de todos los demás elementos.",
+                examples: [
+                    'productExceptSelf([1,2,3,4]) → [24,12,8,6]'
+                ],
+                solution: `function productExceptSelf(nums) {
+    const n = nums.length;
+    const result = new Array(n);
+    
+    result[0] = 1;
+    for (let i = 1; i < n; i++) {
+        result[i] = result[i-1] * nums[i-1];
+    }
+    
+    let right = 1;
+    for (let i = n-1; i >= 0; i--) {
+        result[i] *= right;
+        right *= nums[i];
+    }
+    
+    return result;
+}`,
+                tips: "Dos pasadas: izquierda a derecha y derecha a izquierda."
+            }
+        ];
+
+        function App() {
+            const [ currentExercise, setCurrentExercise ] = useState( 0 );
+            const [ showSolution, setShowSolution ] = useState( false );
+            const [ completedExercises, setCompletedExercises ] = useState( new Set() );
+
+            const exercise = exercises[ currentExercise ];
+            const totalExercises = exercises.length;
+            const completedCount = completedExercises.size;
+
+            const exercisesByDay = exercises.reduce( ( acc, ex ) => {
+                if ( !acc[ ex.day ] ) acc[ ex.day ] = [];
+                acc[ ex.day ].push( ex );
+                return acc;
+            }, {} );
+
+            const handleNext = () => {
+                if ( currentExercise < totalExercises - 1 ) {
+                    setCurrentExercise( currentExercise + 1 );
+                    setShowSolution( false );
+                }
+            };
+
+            const handlePrev = () => {
+                if ( currentExercise > 0 ) {
+                    setCurrentExercise( currentExercise - 1 );
+                    setShowSolution( false );
+                }
+            };
+
+            const handleMarkComplete = () => {
+                setCompletedExercises( prev => new Set( [ ...prev, exercise.id ] ) );
+            };
+
+            return (
+                <div className="container">
+                    <div className="header">
+                        <h1>⚡ CodeWars JS en Español</h1>
+                        <p>Domina JavaScript con ejercicios de entrevistas técnicas</p>
+                    </div>
+
+                    <div className="stats">
+                        <div className="stat-item">
+                            <div className="stat-number">{totalExercises}</div>
+                            <div className="stat-label">Ejercicios Totales</div>
+                        </div>
+                        <div className="stat-item">
+                            <div className="stat-number">{completedCount}</div>
+                            <div className="stat-label">Completados</div>
+                        </div>
+                        <div className="stat-item">
+                            <div className="stat-number">{Math.round( ( completedCount / totalExercises ) * 100 )}%</div>
+                            <div className="stat-label">Progreso</div>
+                        </div>
+                    </div>
+
+                    <div className="main-content">
+                        <div className="sidebar">
+                            {Object.keys( exercisesByDay ).map( day => (
+                                <div key={day} className="day-section">
+                                    <div className="day-header">
+                                        <div className="day-title">Día {day}</div>
+                                        <div className="day-progress">
+                                            {exercisesByDay[ day ].filter( ex => completedExercises.has( ex.id ) ).length}/{exercisesByDay[ day ].length}
+                                        </div>
+                                    </div>
+                                    <div className="exercise-list">
+                                        {exercisesByDay[ day ].map( ex => (
+                                            <div
+                                                key={ex.id}
+                                                className={`exercise-item ${ex.id === exercise.id ? 'active' : ''} ${completedExercises.has( ex.id ) ? 'completed' : ''}`}
+                                                onClick={() => {
+                                                    setCurrentExercise( exercises.findIndex( e => e.id === ex.id ) );
+                                                    setShowSolution( false );
+                                                }}
+                                            >
+                                                <span>{ex.title} {completedExercises.has( ex.id ) && '✓'}</span>
+                                                <span className={`difficulty ${ex.difficulty}`}>
+                                                    {ex.difficulty === 'facil' ? 'Fácil' : ex.difficulty === 'medio' ? 'Medio' : 'Difícil'}
+                                                </span>
+                                            </div>
+                                        ) )}
+                                    </div>
+                                </div>
+                            ) )}
+                        </div>
+
+                        <div className="content-area">
+                            <div className="exercise-header">
+                                <h2 className="exercise-title">
+                                    {exercise.title}
+                                    {completedExercises.has( exercise.id ) && <span className="completed-badge">✓</span>}
+                                </h2>
+                                <div className="exercise-meta">
+                                    <span className={`difficulty ${exercise.difficulty}`}>
+                                        {exercise.difficulty === 'facil' ? 'Fácil' : exercise.difficulty === 'medio' ? 'Medio' : 'Difícil'}
+                                    </span>
+                                    <span>Día {exercise.day}</span>
+                                    <span>Ejercicio {currentExercise + 1} de {totalExercises}</span>
+                                </div>
+                            </div>
+
+                            <div className="description">
+                                <h3>📝 Descripción</h3>
+                                <p>{exercise.description}</p>
+                            </div>
+
+                            <div className="examples">
+                                <h4>💡 Ejemplos</h4>
+                                {exercise.examples.map( ( example, idx ) => (
+                                    <div key={idx} className="example-item">{example}</div>
+                                ) )}
+                            </div>
+
+                            <div className="code-section">
+                                <div className="code-header">
+                                    <span>💻 Solución</span>
+                                    <button className="toggle-btn" onClick={() => setShowSolution( !showSolution )}>
+                                        {showSolution ? 'Ocultar Solución' : 'Ver Solución'}
+                                    </button>
+                                </div>
+                                <pre className={`code-block ${showSolution ? '' : 'hidden'}`}>
+                                    <code>{exercise.solution}</code>
+                                </pre>
+                            </div>
+
+                            {exercise.tips && (
+                                <div className="tips">
+                                    <h4>💡 Tips y Consejos</h4>
+                                    <p>{exercise.tips}</p>
+                                </div>
+                            )}
+
+                            <div className="nav-buttons">
+                                <button className="nav-btn prev" onClick={handlePrev} disabled={currentExercise === 0}>
+                                    ← Anterior
+                                </button>
+                                <button
+                                    className="nav-btn"
+                                    onClick={handleMarkComplete}
+                                    style={{ background: completedExercises.has( exercise.id ) ? '#4caf50' : '#ff9800' }}
+                                >
+                                    {completedExercises.has( exercise.id ) ? '✓ Completado' : 'Marcar como Completado'}
+                                </button>
+                                <button className="nav-btn next" onClick={handleNext} disabled={currentExercise === totalExercises - 1}>
+                                    Siguiente →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render( <App />, document.getElementById( 'root' ) );
+    </script>
+</body>
+
+</html>
